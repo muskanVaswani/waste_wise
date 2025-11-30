@@ -1,0 +1,8 @@
+{
+  "name": "WasteWise Agent",
+  "description": "A sustainability-focused multi-agent system helping users convert household waste into useful outcomes via DIY reuse, composting, and recycling.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}
