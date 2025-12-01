@@ -55,7 +55,4 @@ Planned features include:
 
 **WasteWise is designed to be modular, transparent, and easy to extend. Feedbacks are welcome.**
 
-***
-[8](https://weseniors.ca/whats_new/wastewise-app/)
-[9](https://apps.apple.com/us/app/wastewise/id1434307447)
-[10](https://www.youtube.com/watch?v=E6_cDPQ8iYY)
+
