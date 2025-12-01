@@ -104,25 +104,6 @@ const ToolsPanel: React.FC<ToolsPanelProps> = ({ chatHistory }) => {
           </button>
         </div>
 
-         {/* Memory Stats (Mock) */}
-         <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
-          <h3 className="text-sm font-medium text-slate-800 mb-2">Session Memory</h3>
-          <div className="space-y-2">
-            <div className="flex justify-between text-xs text-slate-500">
-              <span>Items Identified:</span>
-              <span>2</span>
-            </div>
-            <div className="flex justify-between text-xs text-slate-500">
-              <span>Preferences:</span>
-              <span>Local</span>
-            </div>
-             <div className="flex justify-between text-xs text-slate-500">
-              <span>Total Tokens:</span>
-              <span>1.2k</span>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   );

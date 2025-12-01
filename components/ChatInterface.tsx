@@ -11,6 +11,82 @@ interface ChatInterfaceProps {
   setActiveAgent: (agent: AgentType) => void;
 }
 
+// Simple Markdown Formatter Component
+const FormattedMessage: React.FC<{ content: string }> = ({ content }) => {
+  // Split content by newlines to process blocks
+  const lines = content.split('\n');
+  const elements: React.ReactNode[] = [];
+  
+  let currentList: React.ReactNode[] = [];
+  let isListing = false;
+
+  const parseBold = (text: string) => {
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, index) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={index} className="font-bold text-slate-900">{part.slice(2, -2)}</strong>;
+      }
+      return part;
+    });
+  };
+
+  lines.forEach((line, index) => {
+    const trimmed = line.trim();
+    
+    // Headers
+    if (trimmed.startsWith('###')) {
+      if (isListing) {
+        elements.push(<ul key={`list-${index}`} className="mb-3 space-y-1">{currentList}</ul>);
+        currentList = [];
+        isListing = false;
+      }
+      elements.push(<h3 key={index} className="text-base font-bold text-green-800 mt-4 mb-2">{trimmed.replace(/^###\s*/, '')}</h3>);
+      return;
+    }
+    
+    if (trimmed.startsWith('##')) {
+      if (isListing) {
+        elements.push(<ul key={`list-${index}`} className="mb-3 space-y-1">{currentList}</ul>);
+        currentList = [];
+        isListing = false;
+      }
+      elements.push(<h2 key={index} className="text-lg font-bold text-green-900 mt-5 mb-3 border-b border-green-200 pb-1">{trimmed.replace(/^##\s*/, '')}</h2>);
+      return;
+    }
+
+    // Lists (Bullets or Numbers)
+    const isListItem = /^[*-]\s/.test(trimmed) || /^\d+\.\s/.test(trimmed);
+    
+    if (isListItem) {
+      isListing = true;
+      const content = trimmed.replace(/^[*-]\s|^\d+\.\s/, '');
+      currentList.push(
+        <li key={`item-${index}`} className="flex items-start gap-2 text-sm text-slate-700 ml-1">
+          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" />
+          <span className="flex-1">{parseBold(content)}</span>
+        </li>
+      );
+    } else {
+      if (isListing) {
+        elements.push(<ul key={`list-${index}`} className="mb-3 space-y-1 pl-1">{currentList}</ul>);
+        currentList = [];
+        isListing = false;
+      }
+      // Paragraphs (ignore empty lines unless they separate distinct blocks)
+      if (trimmed) {
+        elements.push(<p key={index} className="mb-2 text-sm leading-relaxed text-slate-700">{parseBold(line)}</p>);
+      }
+    }
+  });
+
+  // Flush remaining list
+  if (isListing) {
+    elements.push(<ul key="list-end" className="mb-3 space-y-1 pl-1">{currentList}</ul>);
+  }
+
+  return <div className="formatted-content">{elements}</div>;
+};
+
 const ChatInterface: React.FC<ChatInterfaceProps> = ({ 
   messages, 
   setMessages, 
@@ -227,8 +303,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 )}
                 
                 {/* Text Content */}
-                <div className="whitespace-pre-wrap text-sm leading-relaxed">
-                   {msg.content}
+                <div className="text-sm">
+                   {msg.role === 'assistant' ? (
+                     <FormattedMessage content={msg.content} />
+                   ) : (
+                     <div className="whitespace-pre-wrap leading-relaxed">{msg.content}</div>
+                   )}
                 </div>
 
                 {/* Map/Grounding Data */}

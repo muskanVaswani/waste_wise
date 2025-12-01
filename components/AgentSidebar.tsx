@@ -56,23 +56,6 @@ const AgentSidebar: React.FC<AgentSidebarProps> = ({ activeAgentId }) => {
           );
         })}
       </div>
-      
-      <div className="p-4 border-t border-slate-100 bg-slate-50">
-         <div className="bg-white p-3 rounded border border-slate-200 shadow-sm">
-            <h4 className="text-xs font-semibold text-slate-700 mb-2">System Status</h4>
-            <div className="flex justify-between items-center text-xs text-slate-600 mb-1">
-               <span>Memory Usage</span>
-               <span className="text-green-600">Optimal</span>
-            </div>
-             <div className="w-full bg-slate-100 h-1.5 rounded-full mb-3">
-               <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '32%' }}></div>
-             </div>
-             <div className="flex justify-between items-center text-xs text-slate-600">
-               <span>Active Threads</span>
-               <span>{activeAgentId === 'ORCHESTRATOR' ? '1' : '2'}</span>
-            </div>
-         </div>
-      </div>
     </div>
   );
 };
